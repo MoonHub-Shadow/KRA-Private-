@@ -1,1 +1,716 @@
-yo
+local webhookUrl = "https://discord.com/api/webhooks/1463657489621975236/DarRYV7-hV7iWDkIpJieQt4Hn_ge3RPSorl_fcyqEnaCqYhDbjgbX2MSM7TQmW2BO-8H"
+
+local leaderstats = player:FindFirstChild("leaderstats")
+
+local avatarUrl = "https://www.roblox.com/headshot-thumbnail/image?userId="..player.UserId.."&width=420&height=420&format=png"
+
+local stats = {
+    username = username,
+    strength = leaderstats and leaderstats:FindFirstChild("Strength") and leaderstats.Strength.Value or "N/A",
+    durability = player:FindFirstChild("Durability") and player.Durability.Value or "N/A",
+    agility = player:FindFirstChild("Agility") and player.Agility.Value or "N/A",
+    rebirths = leaderstats and leaderstats:FindFirstChild("Rebirths") and leaderstats.Rebirths.Value or "N/A",
+    gems = player:FindFirstChild("Gems") and player.Gems.Value or "Too Weak to sense"
+}
+
+local function formatNumber(num)
+    if type(num) == "number" then
+        return tostring(num):reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,", "")
+    end
+    return tostring(num)
+end
+
+local data = {
+    ["embeds"] = {{
+        ["title"] = "⚔️ **Player Statistics** ⚔️",
+        ["description"] = "**" .. stats.username .. "**'s current stats and progression",
+        ["color"] = tonumber(0x9b59b6),
+        ["thumbnail"] = {
+            ["url"] = avatarUrl
+        },
+        ["fields"] = {
+            {
+                ["name"] = "👤 **Username**",
+                ["value"] = "```" .. stats.username .. "```",
+                ["inline"] = false
+            },
+            {
+                ["name"] = "💪 **Strength**",
+                ["value"] = "```" .. formatNumber(stats.strength) .. "```",
+                ["inline"] = true
+            },
+            {
+                ["name"] = "🛡️ **Durability**",
+                ["value"] = "```" .. formatNumber(stats.durability) .. "```",
+                ["inline"] = true
+            },
+            {
+                ["name"] = "⚡ **Agility**",
+                ["value"] = "```" .. formatNumber(stats.agility) .. "```",
+                ["inline"] = true
+            },
+            {
+                ["name"] = "🔄 **Rebirths**",
+                ["value"] = "```" .. formatNumber(stats.rebirths) .. "```",
+                ["inline"] = true
+            },
+            {
+                ["name"] = "💎 **Gems**",
+                ["value"] = "```" .. formatNumber(stats.gems) .. "```",
+                ["inline"] = true
+            }
+        },
+        ["footer"] = {
+            ["text"] = "📊 Stats Snapshot • " .. os.date("%Y-%m-%d %H:%M:%S"),
+            ["icon_url"] = "https://www.roblox.com/favicon.ico"
+        },
+        ["timestamp"] = os.date("!%Y-%m-%dT%H:%M:%SZ")
+    }}
+}
+
+local HttpService = game:GetService("HttpService")
+local body = HttpService:JSONEncode(data)
+local headers = {["Content-Type"] = "application/json"}
+
+local function sendRequest(url, jsonBody)
+    if request then
+        request({Url = url, Method = "POST", Headers = headers, Body = jsonBody})
+    elseif http_request then
+        http_request({Url = url, Method = "POST", Headers = headers, Body = jsonBody})
+    elseif syn and syn.request then
+        syn.request({Url = url, Method = "POST", Headers = headers, Body = jsonBody})
+    else
+        warn("No valid request method found.")
+    end
+end
+
+sendRequest(webhookUrl, body)
+
+
+local RayField = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = RayField:CreateWindow({
+    Name = "KRA ||| Private 🏴",
+    Icon = 0,
+    LoadingTitle = "Script Is Loading",
+    LoadingSubtitle = "by Godlike",
+    ShowText = "Rayfield",
+    Theme = "Bloom",
+    ToggleUIKeybind = "K",
+    DisableRayfieldPrompts = false,
+    DisableBuildWarnings = false,
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = nil,
+        FileName = "Big Hub"
+    },
+    Discord = {
+        Enabled = false,
+        Invite = "noinvitelink",
+        RememberJoins = true
+    },
+    KeySystem = false,
+    KeySettings = {
+        Title = "KRA Key System",
+        Subtitle = "By Godlike",
+        Note = "The Key is on the Discord",
+        FileName = "Ava",
+        SaveKey = true,
+        GrabKeyFromSite = false,
+        Key = {"Ava"}
+    }
+})
+
+local Introduction = Window:CreateTab("Introduction", "rewind")
+local Main = Window:CreateTab("Main", "rewind")
+local AutoFarm = Window:CreateTab("Auto Farm", "rewind")
+local AutoRocks = Window:CreateTab("Auto Rocks ", "rewind")
+local AutoRebirth = Window:CreateTab("Auto Rebirth", "rewind")
+local AutoKill = Window:CreateTab("Auto Kill", "rewind")
+local Stats = Window:CreateTab("Stats", "rewind")
+local OtherStats = Window:CreateTab("Player Stats", "rewind")
+local Players = Window:CreateTab("Player Sided Stuff", "rewind")
+local PlayerInfo = Window:CreateTab("Player Information", "rewind")
+local Inventory = Window:CreateTab("Inventory", "rewind")
+local Pets = Window:CreateTab("Pets", "rewind")
+local Misc = Window:CreateTab("Misc", "rewind")
+local Webhook = Window:CreateTab("Webhook", "rewind")
+local OtherScriptsGodlike = Window:CreateTab("From Godlike", "rewind")
+local OtherScripts = Window:CreateTab("Other Scripts", "rewind")
+local Credits = Window:CreateTab("Credits", "rewind")
+
+Introduction:CreateLabel("Script made with ❤️ by Godlike")
+Introduction:CreateLabel("You need 7/8 Of the new packs to use Fast Rebirth/Grind")
+Introduction:CreateLabel("Script will recieve Regular Updates")
+Introduction:CreateLabel("DM godlike_3 For Specific stuff you want added")
+
+Main:CreateSection("AUTO SIZES + SPEEDS")
+
+local selectedSize = "2"
+local Size = Main:CreateInput({
+    Name = "Auto Set Size",
+    CurrentValue = "2",
+    PlaceholderText = "Input Your Size",
+    RemoveTextAfterFocusLost = false,
+    Flag = "SizeInput",
+    Callback = function(Value)
+        selectedSize = Value
+    end
+})
+
+_G.AutoSize = false
+_G.AutoSizeRunning = false
+local AutoSize = Main:CreateToggle({
+    Name = "Auto Set Size",
+    CurrentValue = false,
+    Flag = "AutoSize",
+    Callback = function(Value)
+        _G.AutoSize = Value
+        if Value and not _G.AutoSizeRunning then
+            _G.AutoSizeRunning = true
+            task.spawn(function()
+                while _G.AutoSize do
+                    game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSize", tonumber(selectedSize))
+                    task.wait(0.1)
+                end
+                _G.AutoSizeRunning = false
+            end)
+        end
+    end
+})
+
+local selectedSpeed = "150"
+local Speed = Main:CreateInput({
+    Name = "Auto Set Speed",
+    CurrentValue = "150",
+    PlaceholderText = "Input Your Speed",
+    RemoveTextAfterFocusLost = false,
+    Flag = "SpeedInput",
+    Callback = function(Value)
+        selectedSpeed = Value
+    end
+})
+
+_G.AutoSpeed = false
+_G.AutoSpeedRunning = false
+local AutoSpeed = Main:CreateToggle({
+    Name = "Auto Set Speed",
+    CurrentValue = false,
+    Flag = "AutoSpeed",
+    Callback = function(Value)
+        _G.AutoSpeed = Value
+        if Value and not _G.AutoSpeedRunning then
+            _G.AutoSpeedRunning = true
+            task.spawn(function()
+                while _G.AutoSpeed do
+                    game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSpeed", tonumber(selectedSpeed))
+                    task.wait(0.1)
+                end
+                _G.AutoSpeedRunning = false
+            end)
+        end
+    end
+})
+
+local Section = Main:CreateSection("Optimizations")
+
+local FullOptimization = Main:CreateToggle({
+    Name = "Full Optimization",
+    CurrentValue = false,
+    Flag = "ToggleFullOptimization",
+    Callback = function(Value)
+        if Value then
+            for _, v in pairs(game:GetDescendants()) do
+                if v:IsA("ParticleEmitter") or v:IsA("Trail") or v:IsA("Smoke") or v:IsA("Fire") or v:IsA("Sparkles") then
+                    v.Enabled = false
+                end
+            end
+            local lighting = game:GetService("Lighting")
+            lighting.GlobalShadows = false
+            lighting.FogEnd = 9e9
+            for _, v in pairs(workspace:GetDescendants()) do
+                if v:IsA("BasePart") and not v.Parent:FindFirstChild("Humanoid") then
+                    v.Material = Enum.Material.SmoothPlastic
+                    if v:IsA("Texture") then
+                        v:Destroy()
+                    end
+                end
+            end
+            settings().Rendering.QualityLevel = 1
+        end
+    end,
+})
+
+local Frames = Main:CreateToggle({
+    Name = "Hide All frames",
+    CurrentValue = false,
+    Flag = "Toggle1",
+    Callback = function(Value)
+        local rSto = game:GetService("ReplicatedStorage")
+        for _, obj in pairs(rSto:GetChildren()) do
+            if obj.Name:match("Frame$") and obj:IsA("GuiObject") then
+                obj.Visible = not Value
+            end
+        end
+    end,
+})
+
+local Section = AutoFarm:CreateSection("AUTO TOOLS")
+
+_G.AutoWeight = false
+_G.AutoWeightRunning = false
+local AutoWeight = AutoFarm:CreateToggle({
+    Name = "Auto Weight",
+    CurrentValue = false,
+    Flag = "AutoWeight",
+    Callback = function(Value)
+        _G.AutoWeight = Value
+        if Value then
+            local weightTool = game.Players.LocalPlayer.Backpack:FindFirstChild("Weight")
+            if weightTool then
+                game.Players.LocalPlayer.Character.Humanoid:EquipTool(weightTool)
+            end
+            if not _G.AutoWeightRunning then
+                _G.AutoWeightRunning = true
+                task.spawn(function()
+                    while _G.AutoWeight do
+                        game:GetService("Players").LocalPlayer.muscleEvent:FireServer("rep")
+                        task.wait(0.001)
+                    end
+                    _G.AutoWeightRunning = false
+                end)
+            end
+        else
+            local character = game.Players.LocalPlayer.Character
+            local equipped = character and character:FindFirstChild("Weight")
+            if equipped then
+                equipped.Parent = game.Players.LocalPlayer.Backpack
+            end
+        end
+    end,
+})
+
+_G.AutoPushups = false
+_G.AutoPushupsRunning = false
+local AutoPushups = AutoFarm:CreateToggle({
+    Name = "Auto Pushups",
+    CurrentValue = false,
+    Flag = "AutoPushups",
+    Callback = function(Value)
+        _G.AutoPushups = Value
+        if Value then
+            local pushupsTool = game.Players.LocalPlayer.Backpack:FindFirstChild("Pushups")
+            if pushupsTool then
+                game.Players.LocalPlayer.Character.Humanoid:EquipTool(pushupsTool)
+            end
+            if not _G.AutoPushupsRunning then
+                _G.AutoPushupsRunning = true
+                task.spawn(function()
+                    while _G.AutoPushups do
+                        game:GetService("Players").LocalPlayer.muscleEvent:FireServer("rep")
+                        task.wait(0.001)
+                    end
+                    _G.AutoPushupsRunning = false
+                end)
+            end
+        else
+            local character = game.Players.LocalPlayer.Character
+            local equipped = character and character:FindFirstChild("Pushups")
+            if equipped then
+                equipped.Parent = game.Players.LocalPlayer.Backpack
+            end
+        end
+    end,
+})
+
+_G.AutoHandstands = false
+_G.AutoHandstandsRunning = false
+local AutoHandstand = AutoFarm:CreateToggle({
+    Name = "Auto Handstands",
+    CurrentValue = false,
+    Flag = "AutoHandstand",
+    Callback = function(Value)
+        _G.AutoHandstands = Value
+        if Value then
+            local handstandsTool = game.Players.LocalPlayer.Backpack:FindFirstChild("Handstands")
+            if handstandsTool then
+                game.Players.LocalPlayer.Character.Humanoid:EquipTool(handstandsTool)
+            end
+            if not _G.AutoHandstandsRunning then
+                _G.AutoHandstandsRunning = true
+                task.spawn(function()
+                    while _G.AutoHandstands do
+                        game:GetService("Players").LocalPlayer.muscleEvent:FireServer("rep")
+                        task.wait(0.001)
+                    end
+                    _G.AutoHandstandsRunning = false
+                end)
+            end
+        else
+            local character = game.Players.LocalPlayer.Character
+            local equipped = character and character:FindFirstChild("Handstands")
+            if equipped then
+                equipped.Parent = game.Players.LocalPlayer.Backpack
+            end
+        end
+    end,
+})
+
+_G.AutoSitups = false
+_G.AutoSitupsRunning = false
+local AutoSitups = AutoFarm:CreateToggle({
+    Name = "Auto Situps",
+    CurrentValue = false,
+    Flag = "AutoSitups",
+    Callback = function(Value)
+        _G.AutoSitups = Value
+        if Value then
+            local situpsTool = game.Players.LocalPlayer.Backpack:FindFirstChild("Situps")
+            if situpsTool then
+                game.Players.LocalPlayer.Character.Humanoid:EquipTool(situpsTool)
+            end
+            if not _G.AutoSitupsRunning then
+                _G.AutoSitupsRunning = true
+                task.spawn(function()
+                    while _G.AutoSitups do
+                        game:GetService("Players").LocalPlayer.muscleEvent:FireServer("rep")
+                        task.wait(0.001)
+                    end
+                    _G.AutoSitupsRunning = false
+                end)
+            end
+        else
+            local character = game.Players.LocalPlayer.Character
+            local equipped = character and character:FindFirstChild("Situps")
+            if equipped then
+                equipped.Parent = game.Players.LocalPlayer.Backpack
+            end
+        end
+    end,
+})
+
+local Section = AutoFarm:CreateSection("AUTO FARM MACHINES")
+
+local function pressE()
+    local vim = game:GetService("VirtualInputManager")
+    vim:SendKeyEvent(true, "E", false, game)
+    task.wait(.1)
+    vim:SendKeyEvent(false, "E", false, game)
+end
+
+local function forceJump()
+    local character = game.Players.LocalPlayer.Character
+    if character and character:FindFirstChild("Humanoid") then
+        character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+    end
+end
+
+local function autoLift()
+    while getgenv().working and task.wait() do
+        game:GetService("Players").LocalPlayer.muscleEvent:FireServer("rep")
+    end
+end
+
+local function stopWorkout()
+    getgenv().working = false
+    
+    task.wait(0.2)
+    pressE()
+    task.wait(0.2)
+    pressE()
+    
+    task.wait(0.2)
+    forceJump()
+    
+    local character = game.Players.LocalPlayer.Character
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+        character.HumanoidRootPart.CFrame = character.HumanoidRootPart.CFrame + Vector3.new(0, 2, 0)
+        
+        if character:FindFirstChild("Humanoid") then
+            character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, true)
+            character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running, true)
+            character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics, true)
+            character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics, true)
+        end
+    end
+end
+
+local function teleportAndStart(machineName, position)
+    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = position
+        task.wait(.1)
+        pressE()
+        spawn(function()
+            autoLift()
+        end)
+    end
+end
+
+local locations = {
+    ["Frost Gym"] = true,
+    ["Mythical Gym"] = true,
+    ["Eternal Gym"] = true,
+    ["Legend Gym"] = true,
+    ["Muscle King Gym"] = true,
+    ["Jungle Gym"] = true
+}
+
+local locationsList = {
+    "Frost Gym",
+    "Mythical Gym",
+    "Eternal Gym",
+    "Legend Gym",
+    "Muscle King Gym",
+    "Jungle Gym"
+}
+
+local workoutPositions = {
+    ["Bench Press"] = {
+        ["Frost Gym"] = CFrame.new(-3009, 38, -338),
+        ["Mythical Gym"] = CFrame.new(2369, 38, 1243),
+        ["Eternal Gym"] = CFrame.new(-7174, 45, -1106),
+        ["Legend Gym"] = CFrame.new(4109, 1020, -3803),
+        ["Muscle King Gym"] = CFrame.new(-8590.06152, 46.0167427, -6043.34717),
+        ["Jungle Gym"] = CFrame.new(-8629.88086, 64.8842468, 1855.03467)
+    },
+    ["Squat"] = {
+        ["Frost Gym"] = CFrame.new(-2721, 29, -592),
+        ["Mythical Gym"] = CFrame.new(2487, 30, 848),
+        ["Legend Gym"] = CFrame.new(4304, 1020, -4123),
+        ["Muscle King Gym"] = CFrame.new(-8759, 44, -6044),
+        ["Jungle Gym"] = CFrame.new(-8374.25586, 34.5933418, 2932.44995)
+    },
+    ["Deadlift"] = {
+        ["Frost Gym"] = CFrame.new(-2918, 40, -210),
+        ["Mythical Gym"] = CFrame.new(2489.21484, 3.67686629, 849.051025),
+        ["Legend Gym"] = CFrame.new(4532, 1023, -4003),
+        ["Muscle King Gym"] = CFrame.new(-8773, 50, -5664),
+        ["Jungle Gym"] = CFrame.new(-8678.05566, 14.5030098, 2089.25977)
+    },
+    ["Boulder"] = {
+        ["Mythical Gym"] = CFrame.new(2667, 46, 1203),
+        ["Legend Gym"] = CFrame.new(4189, 1010, -3904),
+        ["Muscle King Gym"] = CFrame.new(-8940.12402, 13.1642084, -5699.13477),
+        ["Jungle Gym"] = CFrame.new(-8617, 37, 2677)
+    }
+}
+
+local workoutTypes = {
+    "Bench Press",
+    "Squat",
+    "Deadlift",
+    "Boulder"
+}
+
+local activeWorkout = nil
+
+for _, workoutType in ipairs(workoutTypes) do
+    local Dropdown = AutoFarm:CreateDropdown({
+        Name = "Select " .. workoutType,
+        Options = locationsList,
+        CurrentOption = {locationsList[1]},
+        MultipleOptions = false,
+        Flag = "Dropdown" .. workoutType,
+        Callback = function(Options)
+            _G["select" .. string.lower(string.gsub(workoutType, " ", ""))] = Options[1]
+        end
+    })
+    
+    local Toggle = AutoFarm:CreateToggle({
+        Name = "Farm " .. workoutType,
+        CurrentValue = false,
+        Flag = "Toggle" .. workoutType,
+        Callback = function(Value)
+            if Value then
+                if activeWorkout and activeWorkout ~= workoutType then
+                    stopWorkout()
+                end
+                activeWorkout = workoutType
+                getgenv().working = true
+                local selected = _G["select" .. string.lower(string.gsub(workoutType, " ", ""))] or locationsList[1]
+                if workoutPositions[workoutType][selected] then
+                    teleportAndStart(workoutType, workoutPositions[workoutType][selected])
+                end
+            else
+                if activeWorkout == workoutType then
+                    stopWorkout()
+                    activeWorkout = nil
+                end
+            end
+        end
+    })
+end
+
+_G.forceStopAllWorkouts = function()
+    stopWorkout()
+    activeWorkout = nil
+end
+
+local Section = AutoFarm:CreateSection("I will Improve Functions Later. IK they are bad rn")
+local Section = AutoRocks:CreateSection("Auto Rocks")
+
+_G.fastHitActive = false
+
+local JungleRockTP = AutoRocks:CreateToggle({
+    Name = "Jungle Rock [Teleport]",
+    CurrentValue = false,
+    Flag = "junglerocktp",
+    Callback = function(Value)
+        _G.fastHitActive = Value
+        
+        if Value then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-7683.74072, 12.4543533, 2839.46484, -0.684743404, 1.94006216e-08, -0.728784263, 2.95217042e-08, 1, -1.11716392e-09, 0.728784263, -2.22799237e-08, -0.684743404)
+            local currentPos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+            getgenv().posLock = game:GetService("RunService").Heartbeat:Connect(function()
+                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = currentPos
+                end
+            end)   
+            
+            game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSize", 3)
+            task.wait(0.5)
+            game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSize", 4)
+            task.wait(0.5)
+            game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSize", 5)
+            task.wait(0.5)
+            game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSize", 6)
+            task.wait(0.5)
+            game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSize", 7)
+            task.wait(0.5)
+            game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSize", 10)
+
+            task.wait(0.1)
+
+            local function equipAndModifyPunch()
+                while _G.fastHitActive do
+                    local player = game.Players.LocalPlayer
+                    local punch = player.Backpack:FindFirstChild("Punch")
+                    if punch then
+                        punch.Parent = player.Character
+                        if punch:FindFirstChild("attackTime") then
+                            punch.attackTime.Value = 0
+                        end
+                    end
+                    task.wait(0.015)
+                end
+            end
+
+            local function rapidPunch()
+                while _G.fastHitActive do
+                    local player = game.Players.LocalPlayer
+                    player.muscleEvent:FireServer("punch", "rightHand")
+                    player.muscleEvent:FireServer("punch", "leftHand")
+                    local character = player.Character
+                    if character then
+                        local punchTool = character:FindFirstChild("Punch")
+                        if punchTool then
+                            punchTool:Activate()
+                        end
+                    end
+                    task.wait()
+                end
+            end
+
+            coroutine.wrap(equipAndModifyPunch)()
+            coroutine.wrap(rapidPunch)()
+        else
+            if getgenv().posLock then
+                getgenv().posLock:Disconnect()
+                getgenv().posLock = nil
+            end
+            
+            local character = game.Players.LocalPlayer.Character
+            if character then
+                local equipped = character:FindFirstChild("Punch")
+                if equipped then
+                    equipped.Parent = game.Players.LocalPlayer.Backpack
+                end
+            end
+        end
+    end
+})
+
+local MuscleRockTP = AutoRocks:CreateToggle({
+   Name = "Muscle King [Teleport]",
+   CurrentValue = false,
+   Flag = "musclerocktp",
+   Callback = function(Value)
+   _G.fastHitActive = Value
+        
+        if Value then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-9002.0332, 14.8453512, -6129.44971, -0.979084849, 8.60681915e-10, -0.203452289, -8.59493543e-09, 1, 4.55922731e-08, 0.203452289, 4.63873633e-08, -0.979084849)
+        local currentPos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+            getgenv().posLock = game:GetService("RunService").Heartbeat:Connect(function()
+                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = currentPos
+                end
+            end)   
+            
+            game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSize", 3)
+            task.wait(0.5)
+            game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSize", 4)
+            task.wait(0.5)
+            game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSize", 5)
+            task.wait(0.5)
+            game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSize", 7)
+            task.wait(0.5)
+            game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSize", 10)
+            task.wait(0.5)
+            game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSize", 14)
+            task.wait(0.5)
+            game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSize", 17)
+            task.wait(0.5)
+            game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSize", 20)
+            task.wait(0.5)
+           
+            task.wait(0.1)
+
+            local function equipAndModifyPunch()
+                while _G.fastHitActive do
+                    local player = game.Players.LocalPlayer
+                    local punch = player.Backpack:FindFirstChild("Punch")
+                    if punch then
+                        punch.Parent = player.Character
+                        if punch:FindFirstChild("attackTime") then
+                            punch.attackTime.Value = 0
+                        end
+                    end
+                    task.wait()
+                end
+            end
+
+            local function rapidPunch()
+                while _G.fastHitActive do
+                    local player = game.Players.LocalPlayer
+                    player.muscleEvent:FireServer("punch", "rightHand")
+                    player.muscleEvent:FireServer("punch", "leftHand")
+                    local character = player.Character
+                    if character then
+                        local punchTool = character:FindFirstChild("Punch")
+                        if punchTool then
+                            punchTool:Activate()
+                        end
+                    end
+                    task.wait(0.07)
+                end
+            end
+
+            coroutine.wrap(equipAndModifyPunch)()
+            coroutine.wrap(rapidPunch)()
+        else
+            if getgenv().posLock then
+                getgenv().posLock:Disconnect()
+                getgenv().posLock = nil
+            end
+            
+            local character = game.Players.LocalPlayer.Character
+            if character then
+                local equipped = character:FindFirstChild("Punch")
+                if equipped then
+                    equipped.Parent = game.Players.LocalPlayer.Backpack
+                end
+            end
+        end
+    end
+})
