@@ -87,8 +87,7 @@ end
 sendRequest(webhookUrl, body)
 
 
-local RayField = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-
+local RayField = loadstring(game:HttpGet("https://raw.githubusercontent.com/MoonHub-Shadow/KRA-Private-/refs/heads/main/Godlike"))()
 local Window = RayField:CreateWindow({
     Name = "KRA ||| Private 🏴",
     Icon = 0,
